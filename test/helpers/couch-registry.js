@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs-extra');
 var spawn = require('child_process').spawn;
 var Promise = require('bluebird');
-Promise.longStackTraces();
 var debug = require('debug')('test:couch-registry');
 var agent = require('superagent-promise');
 
@@ -18,6 +17,8 @@ var couchPassword = 'admin';
 
 // 127.0.0.1 is mapped to /registry/_design/app/_rewrite
 var registryUrl = 'http://127.0.0.1:' + port;
+
+exports.userCredentials = couchUser + ':' + couchPassword;
 
 // app.js can be downloaded here:
 //   https://skimdb.npmjs.com/registry/_design/app
