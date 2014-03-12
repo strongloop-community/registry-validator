@@ -48,6 +48,16 @@ describe('my registry', function() {
  - `userCredentials` - `{String}` in the form of 'user:password'. 
    The credentials to use for authentication of the registry requests.
 
+## CLI
+
+If you have installed this module globally, you can run the validation using
+the following command.
+
+```sh
+$ registry-validator http://127.0.0.1:15984/ admin:pass
+```
+
+Don't forget to reset your registry to an empty state before each run!
 
 ## Self-test
 

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Validate your npm registry implementation, check if it correctly implements the npm protocol.",
   "main": "index.js",
+  "bin": {
+    "registry-validator": "./bin/registry-validator.js"
+  },
   "directories": {
     "test": "test"
   },
