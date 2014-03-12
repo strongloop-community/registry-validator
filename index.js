@@ -14,25 +14,23 @@ var Promise = require('bluebird');
  * `userCredentials` is `login:password` or null
  */
 module.exports = function validate(registryUrlPromise, options) {
-  describe('The Registry', function() {
-    before(function() {
-      return registryUrlPromise
-        .bind(this)
-        .then(function(url) {
-          extend(config, options);
-          config.registryUrl = url;
-          debug('config: %j', config);
-        });
-    });
+  before(function() {
+    return registryUrlPromise
+      .bind(this)
+      .then(function(url) {
+        extend(config, options);
+        config.registryUrl = url;
+        debug('config: %j', config);
+      });
+  });
 
-    beforeEach(function() {
-      fs.removeSync(config.sandbox);
-      fs.mkdirsSync(config.sandbox);
-    });
+  beforeEach(function() {
+    fs.removeSync(config.sandbox);
+    fs.mkdirsSync(config.sandbox);
+  });
 
-    describe('end-to-end', function() {
-      requireDir('./lib/end-to-end');
-    });
+  describe('end-to-end', function() {
+    requireDir('./lib/end-to-end');
   });
 };
 

@@ -34,10 +34,12 @@ var registryUrlPromise = new Promise(function(resolve, reject) {
     });
 });
 
-validate(registryUrlPromise, {
-  // Configuration options as described below
-  userCredentials: 'admin:password'
-});
+describe('my registry', function() {
+  validate(registryUrlPromise, {
+    // Configuration options as described below
+    userCredentials: 'admin:password'
+  });
+}
 ```
 
 

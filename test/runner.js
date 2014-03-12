@@ -2,6 +2,9 @@ var validate = require('../');
 var couchRegistry = require('./helpers/couch-registry.js');
 
 var registryUrlPromise = couchRegistry.start();
-validate(registryUrlPromise, {
-  userCredentials: couchRegistry.userCredentials
+
+describe('The npmjs.org registry', function() {
+  validate(registryUrlPromise, {
+    userCredentials: couchRegistry.userCredentials
+  });
 });
