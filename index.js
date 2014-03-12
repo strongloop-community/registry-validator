@@ -21,6 +21,11 @@ module.exports = function validate(registryUrlPromise, options) {
         extend(config, options);
         config.registryUrl = url;
         debug('config: %j', config);
+        if (/npmjs/.test(url)) {
+          throw new Error(
+            'Detected a registry URL that looks like a public npmjs registry.' +
+              ' Aborting the validation.');
+        }
       });
   });
 
