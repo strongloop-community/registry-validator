@@ -21,18 +21,28 @@ module.exports = function validate(registryUrlPromise, options) {
         .then(function(url) {
           extend(config, options);
           config.registryUrl = url;
-          fs.removeSync(config.sandbox);
-          fs.mkdirsSync(config.sandbox);
           debug('config: %j', config);
         });
     });
 
+    beforeEach(function() {
+      fs.removeSync(config.sandbox);
+      fs.mkdirsSync(config.sandbox);
+    });
+
     describe('end-to-end', function() {
-      // TODO - iterate all files in end-to-end
-      require('./lib/end-to-end/publish.e2e');
+      requireDir('./lib/end-to-end');
     });
   });
 };
+
+function requireDir(dir) {
+  dir = path.resolve(dir);
+  fs.readdirSync(dir).forEach(function(name) {
+    if (!/\.js$/.test(name)) return;
+    require(path.join(dir, name));
+  });
+}
 
 // Enable long stack traces to simplify trouble shooting
 Promise.longStackTraces();
