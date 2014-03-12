@@ -35,7 +35,7 @@ module.exports = function validate(registryUrlPromise, options) {
 };
 
 function requireDir(dir) {
-  dir = path.resolve(dir);
+  dir = path.resolve(__dirname, dir);
   fs.readdirSync(dir).forEach(function(name) {
     if (!/\.js$/.test(name)) return;
     require(path.join(dir, name));
