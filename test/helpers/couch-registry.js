@@ -19,8 +19,7 @@ var couchPassword = 'admin';
 var authenticatedAdminUrl = util.format('http://%s:%s@localhost:%d',
                                         couchUser, couchPassword, port);
 
-// 127.0.0.1 is mapped to /registry/_design/app/_rewrite
-var registryUrl = 'http://127.0.0.1:' + port;
+var registryUrl = couchAdminUrl + '/registry/_design/app/_rewrite';
 
 exports.userCredentials = couchUser + ':' + couchPassword;
 
