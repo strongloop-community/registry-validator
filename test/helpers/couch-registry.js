@@ -4,6 +4,8 @@ var spawn = require('child_process').spawn;
 var Promise = require('bluebird');
 var debug = require('debug')('test:couch-registry');
 var agent = require('superagent-promise');
+var util = require('util');
+var couchapp = require('couchapp');
 
 var couchDir = path.resolve(__dirname, '..', 'couch');
 
@@ -14,16 +16,13 @@ var port = 15984;
 var couchAdminUrl = 'http://localhost:' + port;
 var couchUser = 'admin';
 var couchPassword = 'admin';
+var authenticatedAdminUrl = util.format('http://%s:%s@localhost:%d',
+                                        couchUser, couchPassword, port);
 
 // 127.0.0.1 is mapped to /registry/_design/app/_rewrite
 var registryUrl = 'http://127.0.0.1:' + port;
 
 exports.userCredentials = couchUser + ':' + couchPassword;
-
-// app.js can be downloaded here:
-//   https://skimdb.npmjs.com/registry/_design/app
-// See also https://github.com/npm/npm-www/blob/master/dev/initCouchDocs.js
-var couchAppCode = fs.readFileSync(path.join(couchDir, 'app.js'), 'utf-8');
 
 var couchProcess;
 
@@ -82,6 +81,7 @@ function configure() {
 
 function uploadRegistryApp() {
   var databaseUrl = couchAdminUrl + '/registry';
+  var authedDatabaseUrl = authenticatedAdminUrl + '/registry';
 
   return dropDatabase().then(createDatabase).then(upload);
 
@@ -106,14 +106,18 @@ function uploadRegistryApp() {
   }
 
   function upload() {
-    return agent
-      .put(databaseUrl + '/_design/app?new_edits=false')
-      .auth(couchUser, couchPassword)
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
-      .send(couchAppCode)
-      .end()
-      .then(throwOnHttpError);
+    var npmjs_org = require('npmjs.org/registry/app.js');
+
+    // the npmjs.org workflow pushes this app as _design/scratch so that the
+    // indexes can be generated out of band and then COPY is used to update
+    // _design/app with _design/scratch.
+    npmjs_org._id = '_design/app';
+
+    return new Promise(function pushCouchApp(resolve, reject) {
+      couchapp.createApp(npmjs_org, authedDatabaseUrl, function(app) {
+        app.push(resolve);
+      });
+    })
   }
 }
 
