@@ -57,7 +57,11 @@ the following command.
 $ registry-validator http://127.0.0.1:15984/ admin:pass
 ```
 
-Don't forget to reset your registry to an empty state before each run!
+The validation suite uploads multiple dummy packages to the registry,
+therefore you should always use a dedicated test-only instance of the registry
+server.
+
+It's recommented to reset the registry to an empty state before each run.
 
 ## Self-test
 
