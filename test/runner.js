@@ -1,10 +1,15 @@
-var validate = require('../');
+var validator = require('../');
 var couchRegistry = require('./helpers/couch-registry.js');
 
-var registryUrlPromise = couchRegistry.start();
-
 describe('The npmjs.org registry', function() {
-  validate(registryUrlPromise, {
-    userCredentials: couchRegistry.userCredentials
+  before(function() {
+    return couchRegistry.start()
+      .then(function(url) {
+        validator.configure(url, {
+          userCredentials: couchRegistry.userCredentials
+        });
+      });
   });
+
+  validator.defineSuite();
 });
