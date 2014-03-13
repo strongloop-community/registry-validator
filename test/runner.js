@@ -5,6 +5,7 @@ var registryUrlPromise = couchRegistry.start();
 
 describe('The npmjs.org registry', function() {
   validate(registryUrlPromise, {
-    userCredentials: couchRegistry.userCredentials
+    userCredentials: couchRegistry.userCredentials,
+    userEmail: 'test@registry-validator'
   });
 });
