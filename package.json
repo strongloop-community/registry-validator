@@ -2,7 +2,10 @@
   "name": "registry-validator",
   "version": "0.1.0",
   "description": "Validate your npm registry implementation, check if it correctly implements the npm protocol.",
-  "main": "index.js",
+  "main": "lib/validate.js",
+  "bin": {
+    "registry-validator": "./bin/registry-validator.js"
+  },
   "directories": {
     "test": "test"
   },
@@ -25,5 +28,23 @@
   "bugs": {
     "url": "https://github.com/strongloop/registry-validator/issues"
   },
-  "homepage": "https://github.com/strongloop/registry-validator"
+  "homepage": "https://github.com/strongloop/registry-validator",
+  "dependencies": {
+    "bluebird": "^1.1.0",
+    "debug": "^0.7.4",
+    "superagent": "^0.17.0",
+    "promise": "^4.0.0",
+    "superagent-promise": "^0.1.0",
+    "fs-extra": "^0.8.1",
+    "npm": "^1.4.4",
+    "chai": "^1.9.0"
+  },
+  "peerDependencies": {
+    "mocha": "^1.17.0",
+    "mocha-as-promised": "^2.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.17.0",
+    "mocha-as-promised": "^2.0.0"
+  }
 }
