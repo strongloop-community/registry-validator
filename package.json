@@ -44,7 +44,9 @@
     "mocha-as-promised": "^2.0.0"
   },
   "devDependencies": {
+    "couchapp": "^0.10.0",
     "mocha": "^1.17.0",
-    "mocha-as-promised": "^2.0.0"
+    "mocha-as-promised": "^2.0.0",
+    "npmjs.org": "^1.2.0"
   }
 }
