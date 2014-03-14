@@ -2,8 +2,6 @@ var extend = require('util')._extend;
 var Mocha = require('mocha');
 var config = require('./lib/config');
 
-require('mocha-as-promised')();
-
 /**
  * Configure the validation suite.
  * @param {String} registryUrl
