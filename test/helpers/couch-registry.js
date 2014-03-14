@@ -112,10 +112,18 @@ function uploadRegistryApp() {
     // _design/app with _design/scratch.
     npmjsApp._id = '_design/app';
 
+    // redirect console.log messages printed by couchapp to debug log
+    var _log = console.log;
+    console.log = function() {
+      debug.apply(debug, arguments);
+    };
+
     return new Promise(function pushCouchApp(resolve, reject) {
       couchapp.createApp(npmjsApp, authedDatabaseUrl, function(app) {
         app.push(resolve);
       });
+    }).finally(function() {
+      console.log = _log;
     });
   }
 }
