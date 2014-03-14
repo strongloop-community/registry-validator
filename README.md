@@ -3,12 +3,41 @@
 Validate your npm registry implementation,
 check if it correctly implements the npm protocol.
 
-## Usage
+## Usage (CLI)
 
-Install mocha, registry-validator and bluebird promises to your project:
+Install this module globally:
 
 ```sh
-$ npm install --save-dev mocha bluebird registry-validator
+$ npm install -g registry-validator
+```
+
+Once your registry is up and running, run the validation:
+
+```sh
+$ registry-validator http://127.0.0.1:15984/ admin:pass
+```
+
+The validation suite uploads multiple dummy packages to the registry,
+therefore you should always use a dedicated test-only instance of the registry
+server.
+
+It's recommented to reset the registry to an empty state before each run.
+
+### CLI parameters
+
+The first argument is the URL of the registry. Use the same value 
+you pass to `--registry` option of `npm`.
+
+The second argument is optional credentials to use for publishing test
+packages. The format is `{login}:{password}`.
+
+
+## Usage (programatic)
+
+Add the module to your project
+
+```sh
+$ npm install --save-dev registry-validator
 ```
 
 Create a new test file that will
@@ -17,47 +46,38 @@ Create a new test file that will
  - run the validation test suite
 
 ```js
-var validate = require('registry-validator');
-var Promise = require('bluebird');
+var validator = require('registry-validator');
 var registry = require('../');
 
-var registryUrlPromise = new Promise(function(resolve, reject) {
-  // assuming express-based implementation
-  var app = registry();
-  app
-    .listen(function() {
-      var port = app.address().port;
-      resolve('http://localhost:' + port);
-    })
-    .on('error', function(err) {
-      reject(err);
-    });
+// assuming an express-based implementation
+var app = registry();
+app.listen(function() {
+  var port = this.address().port;
+  run('http://localhost:' + port);
 });
 
-describe('my registry', function() {
-  validate(registryUrlPromise, {
-    // Configuration options as described below
-    userCredentials: 'admin:password'
-  });
-}
+function run(url) {
+  validator
+    .configure(url, {/* options - see below */})
+    .run(function(err) {
+      if (err) console.error(err);
+      process.exit(err ? 1 : 0);
+    });
+});
 ```
 
+**NOTE**
 
-## Options
+This module uses `mocha`, `bluebird` and `mocha-as-promised` internally.
+While it should be possible to include this module in an application that uses
+some of those three modules too, extra care must be taken to prevent
+configuration conflicts. It may be easier to use the CLI or start the registry
+in a child process in such case.
 
- - `userCredentials` - `{String}` in the form of 'user:password'. 
+### Configuration options
+
+ - `userCredentials` - `{String}` in the form of 'user:password'.
    The credentials to use for authentication of the registry requests.
-
-## CLI
-
-If you have installed this module globally, you can run the validation using
-the following command.
-
-```sh
-$ registry-validator http://127.0.0.1:15984/ admin:pass
-```
-
-Don't forget to reset your registry to an empty state before each run!
 
 ## Self-test
 
@@ -73,5 +93,5 @@ Use the usual `npm test` command to run the self-test.
 
 If the assertion message does not include enough details to identify the
 problem, set the environment variable `DEBUG=registry-validator:*`
-and re-run the failing test. Debug logs contain the output from 
+and re-run the failing test. Debug logs contain the output from
 the `npm` client among other things.
