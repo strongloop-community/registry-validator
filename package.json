@@ -10,6 +10,7 @@
     "test": "test"
   },
   "scripts": {
+    "pretest": "jshint .",
     "test": "mocha"
   },
   "repository": {
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "couchapp": "^0.10.0",
-    "npmjs.org": "^1.2.0"
+    "npmjs.org": "^1.2.0",
+    "jshint": "^2.4.4"
   }
 }

@@ -105,18 +105,26 @@ function uploadRegistryApp() {
   }
 
   function upload() {
-    var npmjs_org = require('npmjs.org/registry/app.js');
+    var npmjsApp = require('npmjs.org/registry/app.js');
 
     // the npmjs.org workflow pushes this app as _design/scratch so that the
     // indexes can be generated out of band and then COPY is used to update
     // _design/app with _design/scratch.
-    npmjs_org._id = '_design/app';
+    npmjsApp._id = '_design/app';
+
+    // redirect console.log messages printed by couchapp to debug log
+    var _log = console.log;
+    console.log = function() {
+      debug.apply(debug, arguments);
+    };
 
     return new Promise(function pushCouchApp(resolve, reject) {
-      couchapp.createApp(npmjs_org, authedDatabaseUrl, function(app) {
+      couchapp.createApp(npmjsApp, authedDatabaseUrl, function(app) {
         app.push(resolve);
       });
-    })
+    }).finally(function() {
+      console.log = _log;
+    });
   }
 }
 
