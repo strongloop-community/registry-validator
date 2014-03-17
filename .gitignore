@@ -10,4 +10,7 @@
 *.pid
 *.swp
 *.swo
+*.tgz
+*.gz
 node_modules
+sandbox

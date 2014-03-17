@@ -1,0 +1,4 @@
+couchdb.log
+data
+app.js
+erl_crash.dump
