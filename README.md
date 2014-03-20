@@ -68,7 +68,7 @@ function run(url) {
 
 **NOTE**
 
-This module uses `mocha`, `bluebird` and `mocha-as-promised` internally.
+This module uses `mocha` and `bluebird` internally.
 While it should be possible to include this module in an application that uses
 some of those three modules too, extra care must be taken to prevent
 configuration conflicts. It may be easier to use the CLI or start the registry

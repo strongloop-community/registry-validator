@@ -1,6 +1,6 @@
 {
   "name": "registry-validator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Validate your npm registry implementation, check if it correctly implements the npm protocol.",
   "main": "index.js",
   "bin": {
@@ -42,7 +42,7 @@
     "superagent-promise": "^0.1.0"
   },
   "devDependencies": {
-    "couchapp": "^0.10.0",
+    "couchapp": "^0.11.0",
     "npmjs.org": "^1.2.0",
     "jshint": "^2.4.4"
   }
